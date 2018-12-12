@@ -4,6 +4,8 @@ const $jobRoleSelect = $('select[id="title"]');
 const $jobRoleOther = $('input[id="other-title"]');
 const $shirtDesign = $('select[id="design"]');
 const $shirtColorDiv = $('div[id="colors-js-puns"]');
+const $colorOptions = $shirtColorDiv.children().eq(1);
+const $numOfColors = $colorOptions.length;
 
 //initial formatting of page
 $nameField.focus();
@@ -19,10 +21,29 @@ $jobRoleSelect.on('click', e => {
 		$jobRoleOther.hide();
 });
 
+//reset colors show function
+const resetColors = () => {
+	for(c=0; c<$numOfColors; c++)
+		$colorOptions.children().eq(c).show();
+}
+//function to calculate which colors should be shown
+const colorsShown = theme => {
+	resetColors();
+
+	for(c=0; c<$numOfColors; c++)
+		if(theme === "js puns" && c>2)
+			$colorOptions.children().eq(c).hide();
+		else if(theme === "heart js" && c<3)
+			$colorOptions.children().eq(c).hide();
+}
+
 //function to show color options until a theme is chosen and to show or hide appropriate color options
 $shirtDesign.on('click', e => {
-	if(e.target.value != "Select Theme")
-		$shirtColorDiv.show();
-	else
+	const shirtTheme = e.target.value;
+
+	if(shirtTheme === "Select Theme")
 		$shirtColorDiv.hide();
+	else
+		$shirtColorDiv.show();
+		colorsShown(shirtTheme);
 });
