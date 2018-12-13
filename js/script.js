@@ -21,7 +21,7 @@ $jobRoleSelect.on('click', e => {
 		$jobRoleOther.hide();
 });
 
-//reset colors show function
+//resets colors shown
 const resetColors = () => {
 	for(c=0; c<$numOfColors; c++)
 		$colorOptions.children().eq(c).show();
@@ -29,12 +29,22 @@ const resetColors = () => {
 //function to calculate which colors should be shown
 const colorsShown = theme => {
 	resetColors();
+	let startNum;
+	let limit;
 
-	for(c=0; c<$numOfColors; c++)
-		if(theme === "js puns" && c>2)
-			$colorOptions.children().eq(c).hide();
-		else if(theme === "heart js" && c<3)
-			$colorOptions.children().eq(c).hide();
+	if(theme === "js puns") {
+		startNum = 2;
+		limit = $numOfColors;
+	}
+	else if(theme === "heart js") {
+		startNum = 0;
+		limit = 2;
+	}
+
+	for(c=startNum;c<limit;c++)
+		$colorOptions.children().eq(c).hide();
+
+
 }
 
 //function to show color options until a theme is chosen and to show or hide appropriate color options
