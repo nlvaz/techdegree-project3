@@ -5,13 +5,13 @@ const $jobRoleOther = $('input[id="other-title"]');
 const $shirtDesign = $('select[id="design"]');
 const $shirtColorDiv = $('div[id="colors-js-puns"]');
 const $colorOptions = $shirtColorDiv.children().eq(1);
-const $numOfColors = $colorOptions.length;
+const $colors = $colorOptions.children();
+const $numOfColors = $colors.length;
 
 //initial formatting of page
 $nameField.focus();
 $jobRoleOther.hide();
 $shirtColorDiv.hide();
-
 
 //function to show or hide job role input depending on selected option
 $jobRoleSelect.on('click', e => {
@@ -23,27 +23,37 @@ $jobRoleSelect.on('click', e => {
 
 //resets colors shown
 const resetColors = () => {
-	for(c=0; c<$numOfColors; c++)
-		$colorOptions.children().eq(c).show();
+	for(c=0; c<$numOfColors; c++) {
+		$colors.eq(c).show();
+	}
 }
 //function to calculate which colors should be shown
 const colorsShown = theme => {
 	resetColors();
+	const firstIndexPuns = 0;
+	const firstIndexHeart = 3;
 	let startNum;
 	let limit;
+	let initialShown;
 
 	if(theme === "js puns") {
-		startNum = 2;
+		initialShown = firstIndexPuns;
+		startNum = firstIndexHeart;
 		limit = $numOfColors;
+
+		$colors.eq(initialShown).attr('selected', true);
 	}
-	else if(theme === "heart js") {
-		startNum = 0;
-		limit = 2;
+	else {
+		initialShown = firstIndexHeart;
+		startNum = firstIndexPuns;
+		limit = firstIndexHeart;
+
+		$colors.eq(initialShown).attr('selected', true);
 	}
 
-	for(c=startNum;c<limit;c++)
-		$colorOptions.children().eq(c).hide();
-
+	for(c=startNum;c<limit;c++) {
+		$colors.eq(c).hide();
+	}
 
 }
 
@@ -53,7 +63,8 @@ $shirtDesign.on('click', e => {
 
 	if(shirtTheme === "Select Theme")
 		$shirtColorDiv.hide();
-	else
+	else {
 		$shirtColorDiv.show();
 		colorsShown(shirtTheme);
+	}
 });
