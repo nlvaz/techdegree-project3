@@ -7,6 +7,9 @@ const $shirtColorDiv = $('div[id="colors-js-puns"]');
 const $colorOptions = $shirtColorDiv.children().eq(1);
 const $colors = $colorOptions.children();
 const $numOfColors = $colors.length;
+//constants for color functions
+const firstIndexPuns = 0;
+const firstIndexHeart = 3;
 
 //initial formatting of page
 $nameField.focus();
@@ -22,33 +25,35 @@ $jobRoleSelect.on('click', e => {
 });
 
 //resets colors shown
-const resetColors = () => {
+const resetColorsShown = theme => {
+	if(theme === "js puns")
+		$colors.eq(firstIndexHeart).attr('selected', false);
+	else
+		$colors.eq(firstIndexPuns).attr('selected', false);
+
 	for(c=0; c<$numOfColors; c++) {
 		$colors.eq(c).show();
 	}
 }
 //function to calculate which colors should be shown
 const colorsShown = theme => {
-	resetColors();
-	const firstIndexPuns = 0;
-	const firstIndexHeart = 3;
+	resetColorsShown(theme);
 	let startNum;
 	let limit;
-	let initialShown;
 
 	if(theme === "js puns") {
 		initialShown = firstIndexPuns;
 		startNum = firstIndexHeart;
 		limit = $numOfColors;
 
-		$colors.eq(initialShown).attr('selected', true);
+		$colors.eq(firstIndexPuns).attr('selected', true);
 	}
 	else {
 		initialShown = firstIndexHeart;
 		startNum = firstIndexPuns;
 		limit = firstIndexHeart;
 
-		$colors.eq(initialShown).attr('selected', true);
+		$colors.eq(firstIndexHeart).attr('selected', true);
 	}
 
 	for(c=startNum;c<limit;c++) {
