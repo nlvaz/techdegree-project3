@@ -24,7 +24,7 @@ $jobRoleSelect.on('click', e => {
 		$jobRoleOther.hide();
 });
 
-//resets colors shown
+//resets colors shown and which color option is selected depending on the theme passed to the function
 const resetColorsShown = theme => {
 	if(theme === "js puns")
 		$colors.eq(firstIndexHeart).attr('selected', false);
@@ -35,7 +35,7 @@ const resetColorsShown = theme => {
 		$colors.eq(c).show();
 	}
 }
-//function to calculate which colors should be shown
+//function to calculate which colors should be shown/hidden depending on theme passed and sets the selected option based on the theme
 const colorsShown = theme => {
 	resetColorsShown(theme);
 	let startNum;
@@ -62,7 +62,7 @@ const colorsShown = theme => {
 
 }
 
-//function to show color options until a theme is chosen and to show or hide appropriate color options
+//eventListener to get value of theme clicked on by user; calls colorsShown function if necessary
 $shirtDesign.on('click', e => {
 	const shirtTheme = e.target.value;
 
@@ -73,3 +73,5 @@ $shirtDesign.on('click', e => {
 		colorsShown(shirtTheme);
 	}
 });
+
+//eventListener to disable conflicting activities available to users
