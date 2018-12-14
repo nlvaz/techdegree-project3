@@ -7,6 +7,7 @@ const $shirtColorDiv = $('div[id="colors-js-puns"]');
 const $colorOptions = $shirtColorDiv.children().eq(1);
 const $colors = $colorOptions.children();
 const $numOfColors = $colors.length;
+const $activities = $('.activities').children();
 //constants for color functions
 const firstIndexPuns = 0;
 const firstIndexHeart = 3;
@@ -74,4 +75,7 @@ $shirtDesign.on('click', e => {
 	}
 });
 
-//eventListener to disable conflicting activities available to users
+//eventListener to determine which acitivity has been checked
+$activities.on('click', e => {
+
+});
