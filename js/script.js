@@ -1,4 +1,4 @@
-//global variables selecting/creating important components
+//global variables & constants selecting/creating important components
 const $nameField = $('input[id="name"]');
 const $jobRoleSelect = $('select[id="title"]');
 const $jobRoleOther = $('input[id="other-title"]');
@@ -7,6 +7,7 @@ const $shirtColorDiv = $('div[id="colors-js-puns"]');
 const $colorOptions = $shirtColorDiv.children().eq(1);
 const $colors = $colorOptions.children();
 const $numOfColors = $colors.length;
+const $activities = $('input[type="checkbox"]');
 //constants for color functions
 const firstIndexPuns = 0;
 const firstIndexHeart = 3;
@@ -74,8 +75,10 @@ $shirtDesign.on('click', e => {
 	}
 });
 
-//eventListener to determine which acitivity has been checked
-$('input:checkbox').change(() => {
-	if(this.checked)
-		console.log(this.value);
+//eventListener to determine which acitivities have been checked & to compile them into an array
+$activities.on('click', () => {
+	if($(':checked')) {
+		const checkedActs = $('.activities input:checked');
+
+	}
 });
