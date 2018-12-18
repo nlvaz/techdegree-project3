@@ -7,7 +7,8 @@ const $shirtColorDiv = $('div[id="colors-js-puns"]');
 const $colorOptions = $shirtColorDiv.children().eq(1);
 const $colors = $colorOptions.children();
 const $numOfColors = $colors.length;
-const $activities = $('input[type="checkbox"]');
+const $activities = $('.activities');
+let checkedActs = [];
 //constants for color functions
 const firstIndexPuns = 0;
 const firstIndexHeart = 3;
@@ -77,8 +78,8 @@ $shirtDesign.on('click', e => {
 
 //eventListener to determine which acitivities have been checked & to compile them into an array
 $activities.on('click', () => {
-	if($(':checked')) {
-		const checkedActs = $('.activities input:checked');
-
-	}
+	$('.activities[input:checked]').each((index, element)=> {
+		checkedActs[index] = element;
+	});
+	console.log(checkedActs);
 });
