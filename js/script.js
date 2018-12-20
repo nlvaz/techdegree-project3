@@ -7,16 +7,13 @@ const $shirtColorDiv = $('div[id="colors-js-puns"]');
 const $colorOptions = $shirtColorDiv.children().eq(1);
 const $colors = $colorOptions.children();
 const $numOfColors = $colors.length;
-const $activities = $('.activities');
-let checkedActs = [];
+const $paymentInfo = $('#payment');
+const $creditInfo = $('#credit-card');
+const $payPal = $creditInfo.next();
+const $bitcoin = $payPal.next();
 //constants for color functions
 const firstIndexPuns = 0;
 const firstIndexHeart = 3;
-
-//initial formatting of page
-$nameField.focus();
-$jobRoleOther.hide();
-$shirtColorDiv.hide();
 
 //function to show or hide job role input depending on selected option
 $jobRoleSelect.on('click', e => {
@@ -77,9 +74,40 @@ $shirtDesign.on('click', e => {
 });
 
 //eventListener to determine which acitivities have been checked & to compile them into an array
-$activities.on('click', () => {
-	$('.activities[input:checked]').each((index, element)=> {
-		checkedActs[index] = element;
-	});
-	console.log(checkedActs);
+
+//function to initially hide payment method info shown
+const hidePayMethod = () => {
+	$bitcoin.hide();
+	$payPal.hide();
+	$creditInfo.hide();
+}
+
+//function for credit card info validation
+
+//function to show proper information depending on payment method selected
+const showPayMethod = pMethod => {
+	if(pMethod === 'credit card' || pMethod === 'select_method') {
+		$creditInfo.show();
+	}
+	else if(pMethod === 'paypal') {
+		$payPal.show();
+	}
+	else {
+		$bitcoin.show();
+	}
+}
+
+//eventListener to hide/display payment info depending on user selection
+$paymentInfo.on('click', e => {
+	const payMethod = e.target.value;
+	hidePayMethod();
+	showPayMethod(payMethod);
 });
+
+//initial formatting of page
+$nameField.focus();
+$jobRoleOther.hide();
+$shirtColorDiv.hide();
+$paymentInfo.eq(1).attr('selected', true);
+
+
