@@ -108,6 +108,7 @@ $paymentInfo.on('click', e => {
 //initial formatting of page
 $nameField.focus();
 $jobRoleOther.hide();
+$paymentInfo.eq(1).attr.('selected', true);
 showPayMethod('credit card');
 
 
