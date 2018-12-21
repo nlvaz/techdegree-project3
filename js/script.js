@@ -86,8 +86,10 @@ const hidePayMethod = () => {
 
 //function to show proper information depending on payment method selected
 const showPayMethod = pMethod => {
+	hidePayMethod();
 	if(pMethod === 'credit card' || pMethod === 'select_method') {
 		$creditInfo.show();
+		$paymentInfo.eq(1).attr('selected', true);
 	}
 	else if(pMethod === 'paypal') {
 		$payPal.show();
@@ -100,14 +102,13 @@ const showPayMethod = pMethod => {
 //eventListener to hide/display payment info depending on user selection
 $paymentInfo.on('click', e => {
 	const payMethod = e.target.value;
-	hidePayMethod();
 	showPayMethod(payMethod);
 });
 
 //initial formatting of page
 $nameField.focus();
 $jobRoleOther.hide();
-$shirtColorDiv.hide();
-$paymentInfo.eq(1).attr('selected', true);
+showPayMethod('credit card');
+
 
 
