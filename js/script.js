@@ -8,6 +8,7 @@ const $colorOptions = $shirtColorDiv.children().eq(1);
 const $colors = $colorOptions.children();
 const $numOfColors = $colors.length;
 const $paymentInfo = $('#payment');
+const $paymentOptions = $paymentInfo.children();
 const $creditInfo = $('#credit-card');
 const $payPal = $creditInfo.next();
 const $bitcoin = $payPal.next();
@@ -16,7 +17,7 @@ const firstIndexPuns = 0;
 const firstIndexHeart = 3;
 
 //function to show or hide job role input depending on selected option
-$jobRoleSelect.on('click', e => {
+$jobRoleSelect.on('change', e => {
 	if(e.target.value === "other")
 		$jobRoleOther.show();
 	else
@@ -62,7 +63,7 @@ const colorsShown = theme => {
 }
 
 //eventListener to get value of theme clicked on by user; calls colorsShown function if necessary
-$shirtDesign.on('click', e => {
+$shirtDesign.on('change', e => {
 	const shirtTheme = e.target.value;
 
 	if(shirtTheme === "Select Theme")
@@ -73,7 +74,7 @@ $shirtDesign.on('click', e => {
 	}
 });
 
-//eventListener to determine which acitivities have been checked & to compile them into an array
+//eventListener to determine which acitivities have been checked
 
 //function to initially hide payment method info shown
 const hidePayMethod = () => {
@@ -82,14 +83,12 @@ const hidePayMethod = () => {
 	$creditInfo.hide();
 }
 
-//function for credit card info validation
-
 //function to show proper information depending on payment method selected
 const showPayMethod = pMethod => {
 	hidePayMethod();
-	if(pMethod === 'credit card' || pMethod === 'select_method') {
+	if(pMethod === 'credit card') {
 		$creditInfo.show();
-		$paymentInfo.eq(1).attr('selected', true);
+		$paymentOptions.eq(1).attr('selected', true);
 	}
 	else if(pMethod === 'paypal') {
 		$payPal.show();
@@ -100,7 +99,7 @@ const showPayMethod = pMethod => {
 }
 
 //eventListener to hide/display payment info depending on user selection
-$paymentInfo.on('click', e => {
+$paymentInfo.on('change', e => {
 	const payMethod = e.target.value;
 	showPayMethod(payMethod);
 });
@@ -108,8 +107,10 @@ $paymentInfo.on('click', e => {
 //initial formatting of page
 $nameField.focus();
 $jobRoleOther.hide();
-$paymentInfo.eq(1).attr('selected', true);
+$paymentOptions.eq(0).attr('disabled', 'disabled');
 showPayMethod('credit card');
+
+/****** FORM VALIDATION FUNCTIONS ******/
 
 
 
