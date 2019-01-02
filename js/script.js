@@ -7,6 +7,8 @@ const $shirtColorDiv = $('div[id="colors-js-puns"]');
 const $colorOptions = $shirtColorDiv.children().eq(1);
 const $colors = $colorOptions.children();
 const $numOfColors = $colors.length;
+const $activitiesDiv = $('.activities');
+const $activites = $activitiesDiv.children();
 const $paymentInfo = $('#payment');
 const $paymentOptions = $paymentInfo.children();
 const $creditInfo = $('#credit-card');
@@ -75,6 +77,10 @@ $shirtDesign.on('change', e => {
 });
 
 //eventListener to determine which acitivities have been checked
+$activitiesDiv.on('change', e => {
+
+});
+
 
 //function to initially hide payment method info shown
 const hidePayMethod = () => {
