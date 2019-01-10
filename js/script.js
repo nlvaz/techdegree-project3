@@ -8,7 +8,7 @@ const $colorOptions = $shirtColorDiv.children().eq(1);
 const $colors = $colorOptions.children();
 const $numOfColors = $colors.length;
 const $activitiesDiv = $('.activities');
-const $activites = $activitiesDiv.children();
+const $activities = $('.activities input:checkbox');
 const $paymentInfo = $('#payment');
 const $paymentOptions = $paymentInfo.children();
 const $creditInfo = $('#credit-card');
@@ -76,9 +76,39 @@ $shirtDesign.on('change', e => {
 	}
 });
 
+//function to reset checkboxes by re enabling them all
+const resetBoxes = () => {
+	for(let c = 0; c < $activities.length; c++) {
+		$activities.eq(c).prop("disabled", false);
+	}
+}
+
+//function to disable proper activities depending on what has already be checked
+const filterActs = $acts => {
+	resetBoxes();
+	for(let i = 0; i < $acts.length; i++) {
+		let $current = $acts.eq(i).parent();
+		for(let j = 0; j < $activities.length; j++) {
+			let $check = $activities.eq(j).parent();
+			if($check.html() !== $current.html()) {
+				console.log($current.html());
+				console.log($check.html());
+				if($current.html().includes('Tuesday') && $check.html().includes('Tuesday')) {
+					if($current.html().includes("9am-12pm") && $check.html().includes("9am-12pm")) {
+						$check.children().prop("disabled", true);
+					}
+					else if($current.html().includes("1pm-4pm") && $check.html().includes("1pm-4pm")) {
+						$check.children().prop("disabled", true);
+					}
+				}
+			}
+		}
+	}
+}
+
 //eventListener to determine which acitivities have been checked
 $activitiesDiv.on('change', e => {
-
+	filterActs($activities.filter(":checked"));
 });
 
 
