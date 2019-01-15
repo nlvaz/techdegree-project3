@@ -1,5 +1,7 @@
 //global variables & constants selecting/creating important components
+const $form = $('form');
 const $nameField = $('input[id="name"]');
+const $email = $('input[id="mail"]');
 const $jobRoleSelect = $('select[id="title"]');
 const $jobRoleOther = $('input[id="other-title"]');
 const $shirtDesign = $('select[id="design"]');
@@ -14,6 +16,7 @@ const $paymentOptions = $paymentInfo.children();
 const $creditInfo = $('#credit-card');
 const $payPal = $creditInfo.next();
 const $bitcoin = $payPal.next();
+const $registerButton = $('button');
 //constants for color functions
 const firstIndexPuns = 0;
 const firstIndexHeart = 3;
@@ -91,8 +94,6 @@ const filterActs = $acts => {
 		for(let j = 0; j < $activities.length; j++) {
 			let $check = $activities.eq(j).parent();
 			if($check.html() !== $current.html()) {
-				console.log($current.html());
-				console.log($check.html());
 				if($current.html().includes('Tuesday') && $check.html().includes('Tuesday')) {
 					if($current.html().includes("9am-12pm") && $check.html().includes("9am-12pm")) {
 						$check.children().prop("disabled", true);
@@ -140,13 +141,69 @@ $paymentInfo.on('change', e => {
 	showPayMethod(payMethod);
 });
 
+//eventListener for real time email error message
+
+//eventListener for when register button is clicked
+$form.on("submit", event => {
+	const validName = isValidName($nameField.val());
+	const validMail = isValidEmail($email.val());
+	const activities = activitySelected();
+	let validPayInfo;
+
+	if($paymentInfo.val() === "credit card") {
+		validPayInfo = isValidCard();
+	}
+
+	if(!validName || !validMail || !activities || validPayInfo != undefined) {
+		if(validPayInfo == false) {
+			event.preventDefault();
+		}
+		event.preventDefault();
+	}
+
+});
+
+/****** FORM VALIDATION FUNCTIONS ******/
+const isValidName = uName => {
+	return /^[a-z]+$/.test(uName);
+}
+const isValidEmail = email => {
+	return /^[^@]+@[^@.]+\.[a-z]+$/i.test(email);
+}
+const activitySelected = () => {
+	const selectedActs = $activities.filter(":checked");
+	if(selectedActs.length === 0)
+		return false;
+	else
+		return true;
+}
+const isValidCard = () => {
+	const $cardNum = $('#cc-num');
+	const $zipCode = $('#zip');
+	const $cvv = $('#cvv');
+
+	if($cardNum.val().length !== 16) {
+		return false;
+	}
+
+	if($zipCode.val().length !== 5) {
+		return false;
+	}
+
+	if($cvv.val().length !== 3) {
+		return false;
+	}
+
+}
+
+
+
 //initial formatting of page
 $nameField.focus();
 $jobRoleOther.hide();
+$shirtColorDiv.hide();
 $paymentOptions.eq(0).attr('disabled', 'disabled');
 showPayMethod('credit card');
-
-/****** FORM VALIDATION FUNCTIONS ******/
 
 
 
