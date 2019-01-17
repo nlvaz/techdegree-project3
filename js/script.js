@@ -107,9 +107,42 @@ const filterActs = $acts => {
 	}
 }
 
-//eventListener to determine which acitivities have been checked
+//function to determine and display price total
+const deterPrice = acts => {
+	let total = 0;
+	let loopStart = 0;
+
+	for(let i = loopStart; i < acts.length; i++) {
+		if(acts.eq(i).attr("name") === "all") {
+			total += 200;
+			loopStart = 1;
+		}
+		else
+			total += 100;
+	}
+
+	return total;
+}
+
+//function to remove total p element if present
+const resetTotal = () => {
+	const p = $(".activities p");
+
+	if(p != undefined)
+		p.remove();
+}
+
+//eventListener to determine which acitivities have been checked and to show total
 $activitiesDiv.on('change', e => {
+	resetTotal();
+	let total = deterPrice($activities.filter(":checked"));
+	let p = document.createElement("p");
+
 	filterActs($activities.filter(":checked"));
+
+	p.textContent = "Total: $" + total;
+	$activitiesDiv.append(p);
+
 });
 
 
@@ -141,8 +174,6 @@ $paymentInfo.on('change', e => {
 	showPayMethod(payMethod);
 });
 
-//eventListener for real time email error message
-
 //eventListener for when register button is clicked
 $form.on("submit", event => {
 	const validName = isValidName($nameField.val());
@@ -152,14 +183,15 @@ $form.on("submit", event => {
 
 	if($paymentInfo.val() === "credit card") {
 		validPayInfo = isValidCard();
-	}
-
-	if(!validName || !validMail || !activities || validPayInfo != undefined) {
-		if(validPayInfo == false) {
+		if(!validPayInfo) {
 			event.preventDefault();
 		}
+	}
+
+	if(!validName || !validMail || !activities) {
 		event.preventDefault();
 	}
+
 
 });
 
@@ -167,9 +199,11 @@ $form.on("submit", event => {
 const isValidName = uName => {
 	return /^[a-z]+$/.test(uName);
 }
+
 const isValidEmail = email => {
 	return /^[^@]+@[^@.]+\.[a-z]+$/i.test(email);
 }
+
 const activitySelected = () => {
 	const selectedActs = $activities.filter(":checked");
 	if(selectedActs.length === 0)
@@ -177,25 +211,22 @@ const activitySelected = () => {
 	else
 		return true;
 }
+
 const isValidCard = () => {
 	const $cardNum = $('#cc-num');
 	const $zipCode = $('#zip');
 	const $cvv = $('#cvv');
 
-	if($cardNum.val().length !== 16) {
+	if($cardNum.val().length < 13 || $cardNum.val().length > 16) {
 		return false;
 	}
-
 	if($zipCode.val().length !== 5) {
 		return false;
 	}
-
 	if($cvv.val().length !== 3) {
 		return false;
 	}
-
 }
-
 
 
 //initial formatting of page
@@ -204,6 +235,7 @@ $jobRoleOther.hide();
 $shirtColorDiv.hide();
 $paymentOptions.eq(0).attr('disabled', 'disabled');
 showPayMethod('credit card');
+$("form").attr("novalidate", true);
 
 
 
