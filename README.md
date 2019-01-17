@@ -1,1 +1,2 @@
-# techdegree-project3
+# Third Full Stack JavaScript TechDegree Project
+# - Form Validation
