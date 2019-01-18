@@ -21,6 +21,12 @@ const $registerButton = $('button');
 const firstIndexPuns = 0;
 const firstIndexHeart = 3;
 
+//eventListener for email field for real-time error message
+$email.on('change', e => {
+	removeErrMsg();
+	let valid = isValidEmail(e.target.value);
+});
+
 //function to show or hide job role input depending on selected option
 $jobRoleSelect.on('change', e => {
 	if(e.target.value === "other")
@@ -176,6 +182,7 @@ $paymentInfo.on('change', e => {
 
 //eventListener for when register button is clicked
 $form.on("submit", event => {
+	removeErrMsg();
 	const validName = isValidName($nameField.val());
 	const validMail = isValidEmail($email.val());
 	const activities = activitySelected();
@@ -197,35 +204,83 @@ $form.on("submit", event => {
 
 /****** FORM VALIDATION FUNCTIONS ******/
 const isValidName = uName => {
-	return /^[a-z]+$/.test(uName);
+	let valid = /^[a-z]+$/.test(uName);
+
+
+	if(valid === false) {
+		errorMsg($nameField, "Please enter a name.");
+	}
+
+	return valid;
 }
 
 const isValidEmail = email => {
-	return /^[^@]+@[^@.]+\.[a-z]+$/i.test(email);
+	let valid = /^[^@]+@[^@.]+\.[a-z]+$/i.test(email);
+
+	if(valid === false) {
+			errorMsg($email, "Please enter a valid email.");
+	}
+
+	return valid;
 }
 
 const activitySelected = () => {
 	const selectedActs = $activities.filter(":checked");
-	if(selectedActs.length === 0)
-		return false;
-	else
-		return true;
+	let valid = true;
+
+	if(selectedActs.length === 0) {
+		valid = false;
+		errorMsg($activitiesDiv, "Please select at least one activity.");
+	}
+
+	return valid;
 }
 
 const isValidCard = () => {
 	const $cardNum = $('#cc-num');
 	const $zipCode = $('#zip');
 	const $cvv = $('#cvv');
+	let valid = true;
 
 	if($cardNum.val().length < 13 || $cardNum.val().length > 16) {
-		return false;
+		if($cardNum.val().length === 0)
+			errorMsg($cardNum, "Please enter a credit card number.");
+		else
+			errorMsg($cardNum, "Please enter a number that is between 13 and 16 digits long.");
+
+		valid = false;
 	}
 	if($zipCode.val().length !== 5) {
-		return false;
+		if($zipCode.val().length === 0)
+			errorMsg($zipCode, "Please enter your area code.");
+		else
+			errorMsg($zipCode, "Please enter your 5 digit area code.");
+
+		valid = false;
 	}
 	if($cvv.val().length !== 3) {
-		return false;
+		if($cvv.val().length === 0)
+			errorMsg($cvv, "Please enter a CVV number.");
+		else
+			errorMsg($cvv, "Please enter the three digit number on the back of your card.");
+
+		valid = false;
 	}
+
+	return valid;
+}
+
+//function to create error messages and insert them after the element passed
+const errorMsg = (element, msg) => {
+	let p = document.createElement("p");
+
+	p.classList.add("error");
+	p.textContent = msg;
+	element.after(p);
+}
+
+const removeErrMsg = () => {
+	$("p.error").remove();
 }
 
 
