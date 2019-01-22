@@ -22,7 +22,7 @@ const firstIndexPuns = 0;
 const firstIndexHeart = 3;
 
 //eventListener for email field for real-time error message
-$email.on('change', e => {
+$email.on('keyup', e => {
 	removeErrMsg();
 	let valid = isValidEmail(e.target.value);
 });
@@ -204,7 +204,7 @@ $form.on("submit", event => {
 
 /****** FORM VALIDATION FUNCTIONS ******/
 const isValidName = uName => {
-	let valid = /^[a-z]+$/.test(uName);
+	let valid = /^[a-zA-Z]+ ?([a-zA-Z]+)? ?$/.test(uName);
 
 
 	if(valid === false) {
@@ -242,7 +242,7 @@ const isValidCard = () => {
 	const $cvv = $('#cvv');
 	let valid = true;
 
-	if($cardNum.val().length < 13 || $cardNum.val().length > 16) {
+	if(!/^[0-9]{13,16}$/.test($cardNum.val())) {
 		if($cardNum.val().length === 0)
 			errorMsg($cardNum, "Please enter a credit card number.");
 		else
@@ -250,7 +250,7 @@ const isValidCard = () => {
 
 		valid = false;
 	}
-	if($zipCode.val().length !== 5) {
+	if(!/^[0-9]{5}$/.test($zipCode.val())) {
 		if($zipCode.val().length === 0)
 			errorMsg($zipCode, "Please enter your area code.");
 		else
@@ -258,7 +258,7 @@ const isValidCard = () => {
 
 		valid = false;
 	}
-	if($cvv.val().length !== 3) {
+	if(!/^[0-9]{3}$/.test($cvv.val())) {
 		if($cvv.val().length === 0)
 			errorMsg($cvv, "Please enter a CVV number.");
 		else
